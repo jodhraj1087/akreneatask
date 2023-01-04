@@ -1,0 +1,53 @@
+<?php
+$title = 'Employees List';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('employee', ['action' => 'add']) ?>">Add new employee</a>
+</p>
+<?php $this->inlineScript()->appendFile('../../js/employee.js'); ?>
+<form id="employeeform" name="employeeform" method="post">
+<div><?php if(isset($msg) && $msg!=''){ echo "<span style='color:red;'>".$msg."</span>"; } ?></div>
+<div>Filter Data : <input type="text" id="search" name="search" value="<?php if(isset($search) && $search!=''){ echo $search; } ?>" />&nbsp;<input type="button" value="Search" onclick="filterData();" />&nbsp;<input type="button" value="Clear Search" onclick="document.getElementById('search').value='';" /></div>
+<table class="table">
+<tr>
+    <th><a href="javascript:void(0);" onclick="sortData('employee_id');">Employee ID</a></th>
+    <th><a href="javascript:void(0);" onclick="sortData('employee_id');">Employee Name</a></th>
+    <th>Address</th>
+    <th>Email Address</th>
+    <th>DOB</th>
+    <th>Phone</th>
+    <th>Image URL</th>
+    <th>Created Date</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($employees as $employee) : ?>
+    <tr>
+        <td><?= $employee->employee_id ?></td>
+        <td><?= $this->escapeHtml($employee->employee_name) ?></td>
+        <td><?= $this->escapeHtml($employee->address) ?></td>
+        <td><?= $this->escapeHtml($employee->email_address) ?></td>
+        <td><?= date("jS M, Y",strtotime($employee->dob)) ?></td>
+        <td><?= $employee->phone ?></td>
+        <td><img src="<?= "../../../".$employee->imageurl ?>" style="width: 50px;height: 50px;" /></td>
+        <td><?= $employee->created_date ?></td>
+        <td>
+            <a href="<?= $this->url('employee', ['action' => 'edit', 'id' => $employee->id]) ?>">Edit</a>
+            <a href="javascript:void(0);" onclick="deleteConfirm('<?= $this->url('employee', ['action' => 'delete', 'id' => $employee->id]) ?>');">Delete</a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>
+<div>Go to Page :<select id="page" onchange="gotopage(this.value)">
+                <?php for($i=1;$i<=$totalpages;$i++){
+                    ?>
+                    <option value="<?php echo $i; ?>" <?php if($pageno==$i){echo "selected"; } ?> ><?php echo $i; ?></option>
+                    <?php
+                } ?>
+</select></div>
+<input type="hidden" name="orderby" id="orderby" value="<?php if(isset($orderby) && $orderby!=''){ echo $orderby; } ?>" />
+<input type="hidden" name="ordertype" id="ordertype" value="<?php if(isset($ordertype) && $ordertype!=''){ echo $ordertype; } ?>" />
+<input type="hidden" name="pageno" id="pageno" value="<?php if(isset($pageno) && $pageno!=''){ echo $pageno; } ?>" />
+
+</form>

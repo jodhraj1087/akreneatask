@@ -1,0 +1,45 @@
+<?php
+$title = 'Add Employee';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('employee', ['action' => 'index']) ?>">Employees List</a>
+</p>
+<div><?php if(isset($msg) && $msg!=''){ echo "<span style='color:red;'>".$msg."</span>"; } ?></div>
+<?php $this->inlineScript()->appendFile('../../js/employee.js'); ?>
+<form method="post" name="employeeform" id="employeeform" enctype="multipart/form-data">
+    <table class="table">
+        <tr>
+            <th>Employee ID</th>
+            <td><input type="text" name="employee_id" id="employee_id" /></td>
+        </tr>
+        <tr>
+            <th>Employee Name</th>
+            <td><input type="text" name="employee_name" id="employee_name" /></td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td><input type="text" name="address" id="address" /></td>
+        </tr>
+        <tr>
+            <th>Email ID</th>
+            <td><input type="text" name="email_address" id="email_address" /></td>
+        </tr>
+        <tr>
+            <th>DOB</th>
+            <td><input type="date" name="dob" id="dob" max="<?= date('Y-m-d',strtotime("-18 year")); ?>" /></td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td><input type="integer" name="phone" id="phone" maxlength="10" /></td>
+        </tr>
+        <tr>
+            <th>Image URL</th>
+            <td><input type="file" name="imageurl" id="imageurl" accept="image/jpg, image/jpeg, image/png" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: center;"><input type="submit" onclick="return saveemployee();" value="Add" /></td>
+        </tr>
+    </table>
+</form>

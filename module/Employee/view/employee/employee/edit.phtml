@@ -1,0 +1,49 @@
+<?php
+$title = 'Edit Employee';
+$this->headTitle($title);
+?>
+<h1><?= $this->escapeHtml($title) ?></h1>
+<p>
+    <a href="<?= $this->url('employee', ['action' => 'index']) ?>">Employees List</a>
+</p>
+<div><?php if(isset($msg) && $msg!=''){ echo "<span style='color:red;'>".$msg."</span>"; } ?></div>
+<?php $this->inlineScript()->appendFile('../../js/employee.js'); ?>
+<form method="post" name="employeeform" id="employeeform" enctype="multipart/form-data">
+    <table class="table">
+        <tr>
+            <th>Employee ID</th>
+            <td><input type="text" name="employee_id" id="employee_id" value="<?php echo $data->employee_id; ?>" /></td>
+        </tr>
+        <tr>
+            <th>Employee Name</th>
+            <td><input type="text" name="employee_name" id="employee_name" value="<?php echo $data->employee_name; ?>" /></td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td><input type="text" name="address" id="address" value="<?php echo $data->address; ?>" /></td>
+        </tr>
+        <tr>
+            <th>Email ID</th>
+            <td><input type="text" name="email_address" id="email_address" value="<?php echo $data->email_address; ?>" /></td>
+        </tr>
+        <tr>
+            <th>DOB</th>
+            <td><input type="date" name="dob" id="dob" max="<?= date('Y-m-d',strtotime("-18 year")); ?>" value="<?php echo $data->dob; ?>" /></td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td><input type="integer" name="phone" id="phone" maxlength="10" value="<?php echo $data->phone; ?>" /></td>
+        </tr>
+        <tr>
+            <th>Image URL</th>
+            <td><img src="<?= "../../../".$data->imageurl; ?>" style="width: 100px;height:100px" />
+            <input type="file" name="image" id="image" accept="image/jpg, image/jpeg, image/png" />
+            <input type="hidden" name="imageurl" id="imageurl" value="<?php echo $data->imageurl; ?>" />
+            </td>
+        </tr>
+        <tr>
+            <input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
+            <td colspan="2" style="text-align: center;"><input type="submit" onclick="return updateemployee();" value="Update" /></td>
+        </tr>
+    </table>
+</form>
