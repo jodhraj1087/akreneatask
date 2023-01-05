@@ -52,25 +52,30 @@ class EmployeeController extends AbstractActionController
             if(!empty($employeeiddata) && $employeeiddata->id>0){
                 $msg="Employee ID already associated with other Employee. Please enter employee unique ID";
             }else{
-                if(isset($_FILES["imageurl"]) && $_FILES["imageurl"]['name']!=''){
-                    $target_dir=__DIR__."/../../../../public/img/uploads/";
-                    $filename=preg_replace('/\s+/', '',basename($_FILES["imageurl"]["name"]));
-                    $target_file = $target_dir . $filename;
-                    
-                    $uploadOk = 1;
-                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                    $check = getimagesize($_FILES["imageurl"]["tmp_name"]);
-                    if($check !== false) {
+                $employeeiddata=$this->table->checkEmployeeemailid($data['email_address'],0);
+                if(!empty($employeeiddata) && $employeeiddata->id>0){
+                    $msg="Email Address already associated with other Employee. Please enter employee unique Email ID";
+                }else{
+                    if(isset($_FILES["imageurl"]) && $_FILES["imageurl"]['name']!=''){
+                        $target_dir=__DIR__."/../../../../public/img/uploads/";
+                        $filename=preg_replace('/\s+/', '',basename($_FILES["imageurl"]["name"]));
+                        $target_file = $target_dir . $filename;
+                        
                         $uploadOk = 1;
-                    } else {
-                        $msg= "File is not an image.";
-                        $uploadOk = 0;
-                    }
-                    if($uploadOk==1){
-                        if (move_uploaded_file($_FILES["imageurl"]["tmp_name"], $target_file)) {
-                            $msg = "success";
-                        }else{            
-                            $msg = "Failed to upload image";            
+                        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                        $check = getimagesize($_FILES["imageurl"]["tmp_name"]);
+                        if($check !== false) {
+                            $uploadOk = 1;
+                        } else {
+                            $msg= "File is not an image.";
+                            $uploadOk = 0;
+                        }
+                        if($uploadOk==1){
+                            if (move_uploaded_file($_FILES["imageurl"]["tmp_name"], $target_file)) {
+                                $msg = "success";
+                            }else{            
+                                $msg = "Failed to upload image";            
+                            }
                         }
                     }
                 }    
@@ -117,29 +122,34 @@ class EmployeeController extends AbstractActionController
             if(!empty($employeeiddata) && $employeeiddata->id>0){
                 $msg="Employee ID already associated with other Employee. Please enter employee unique ID";
             }else{
-                if(isset($_FILES["image"]) && $_FILES["image"]['name']!=''){
-                    $target_dir=__DIR__."/../../../../public/img/uploads/";
-                    $filename=preg_replace('/\s+/', '',basename($_FILES["image"]["name"]));
-                    $target_file = $target_dir . $filename;
-                    
-                    $uploadOk = 1;
-                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                    $check = getimagesize($_FILES["image"]["tmp_name"]);
-                    if($check !== false) {
+                $employeeiddata=$this->table->checkEmployeeemailid($data['email_address'],$data['id']);
+                if(!empty($employeeiddata) && $employeeiddata->id>0){
+                    $msg="Email Address already associated with other Employee. Please enter employee unique Email ID";
+                }else{
+                    if(isset($_FILES["image"]) && $_FILES["image"]['name']!=''){
+                        $target_dir=__DIR__."/../../../../public/img/uploads/";
+                        $filename=preg_replace('/\s+/', '',basename($_FILES["image"]["name"]));
+                        $target_file = $target_dir . $filename;
+                        
                         $uploadOk = 1;
-                    } else {
-                        $msg= "File is not an image.";
-                        $uploadOk = 0;
-                    }
-                    if($uploadOk==1){
-                        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                            $msg = "success";
-                        }else{            
-                            $msg = "Failed to upload image";            
+                        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                        $check = getimagesize($_FILES["image"]["tmp_name"]);
+                        if($check !== false) {
+                            $uploadOk = 1;
+                        } else {
+                            $msg= "File is not an image.";
+                            $uploadOk = 0;
                         }
-                    }
-                    $data['imageurl']="img/uploads/".$filename;
-                }    
+                        if($uploadOk==1){
+                            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                $msg = "success";
+                            }else{            
+                                $msg = "Failed to upload image";            
+                            }
+                        }
+                        $data['imageurl']="img/uploads/".$filename;
+                    }   
+                } 
             }
             if($msg=="success"){
                 $employee = new Employee();

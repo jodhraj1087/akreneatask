@@ -73,6 +73,26 @@ class EmployeeTable
 
         return $row;
     }
+    
+    public function checkEmployeeemailid($employeeemailid,$id=0)
+    {
+        $select = new Select('employee');
+        if($id==0){
+            $select->where->nest()
+                    ->equalTo('email_address', $employeeemailid);
+        }else{
+            $select->where->nest()
+                    ->equalTo('email_address', $employeeemailid)
+                    ->notequalTo('id', $id);
+        }
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+        if (! $row) {
+            return array();
+        }
+
+        return $row;
+    }
 
     public function saveEmployee(Employee $employee)
     {
